@@ -1,2 +1,2 @@
 cd /D "%~dp0"
-python server.py
+gunicorn -w 1 server:app

@@ -1,1 +1,1 @@
-python3 -m novetus-masterserver
+gunicorn -w 1 server:app
