@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="//viw.se/resources/css/main.css">
+        <link rel="icon" type="image/png" href="/static/favicon.ico">
+        <title>Novetus | Server browser</title>
+        <style>
+            body {
+                max-width: 1024px;
+                margin: auto auto;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            #container {
+                border-radius: 4px;
+                margin-top: 2%;
+                background-color: #1a1a1a;
+                padding: 10px;
+            }
+            
+            .sInfo {
+                color: var(--textColour);
+            }
+
+            .tInfo {
+                color: var(--link);
+            }
+			
+			.sInfo.name {
+				color: var(--headerSnd);
+			}
+
+            .center {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 90%;
+            }
+
+			p.sInfo.ip {
+				padding-top: 5px;
+			}
+
+            p {
+                margin: 0;
+            }
+			
+			button {
+				margin-top: 10px;
+                margin-bottom: 20px;
+			}
+
+            li > p {
+                color: #adadad;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="container">
+            <img id="fatvetus" class="center" src="/static/fatvetus.png">
+            {% if array|length > 0 %}
+                {% for _, v in array.items() %}
+                    <b class="sInfo name">{{ v["name"] }}</b>
+                    <p class="sInfo ip">IP: <span class="tInfo ip">{{ v["ip"] }}</span></p>
+                    <p class="sInfo port">Port: <span class="tInfo port">{{ v["port"] }}</span></p>
+                    <p class="sInfo client">Client: <span class="tInfo client">{{ v["client"] }}</span></p>
+                    <p class="sInfo map">Map: <span class="tInfo map">{{ v["map"] }}</span></p>
+                    <p class="sInfo uptime">Uptime: <span class="tInfo uptime">{{ v["uptime"] }}</span> seconds</p>
+                    <p class="sInfo players">Players: <span class="tInfo players">{{ v["players"] }}</span></p>
+                    <p class="sInfo novetusver">Novetus version: <span class="tInfo novetusver">{{ v["novetusver"] }}</span></p>
+                    <button {{ v['b64uri']|safe }}>Launch Novetus</button>
+                    <br>
+                {% endfor %}
+            {% else %}
+                <p>There are not current servers on this master server</p>
+            {% endif %}
+            <hr>
+
+            <h3>How to connect:</h3>
+            <p>Make sure you have Novetus URI installed.</p>
+            <ol>
+                <li><p>To install it, open up NovetusBootstrapper <b>as administrator.</b></p></li>
+                <li><p>Then, click on "INSTALL URI" at the bottom right inside of "other options".</p></li>
+                <li><p>Once the pop up window opens, click "Install URI and UserAgent". Then you're done, you can now join any server you want just by clicking on the "Launch Novetus" button under the server details</p></li>
+            </ol>
+        </div>
+    </body>
+</html>
