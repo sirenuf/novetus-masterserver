@@ -40,6 +40,7 @@ def convertTime(seconds):
 
 
 def replaceVars(name, map: str, client: str):
+    name = name.upper()
     name = name.replace("%MAP%", map[:-5])
     name = name.replace("%CLIENT%", client)
     return name
