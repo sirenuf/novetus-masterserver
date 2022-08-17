@@ -9,7 +9,6 @@ from flask import (
 
 app = Flask(__name__)
 app.register_blueprint(endpoint.bp)
-app = ProxyFix(app, x_for=1, x_proto=1, x_host=1)
 
 # TODO: Make more readable.
 def routine():
@@ -23,4 +22,6 @@ task = Thread(target=routine, daemon=True)
 task.start()
 
 if __name__ == "__main__":
-    app.run(port=8000) # debug=true makes the thread run twice... not issue for production
+    app.run() # debug=true makes the thread run twice... not issue for production
+else:
+    app = ProxyFix(app, x_for=1, x_proto=1, x_host=1)

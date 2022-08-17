@@ -13,6 +13,32 @@ novetusVer = "1.3 v8.2022.1"
 
 bp = Blueprint("endpoints", __name__)
 
+def convertTime(seconds):
+    min, sec = divmod(seconds, 60)
+    hour, min = divmod(min, 60)
+
+    num = "%d:%02d:%02d" % (hour, min, sec)
+    tA = [int(num) for num in num.split(":")]
+
+    s = "second"
+    m = "minute"
+    h = "hour"
+
+    if not tA[2] == 1:
+        s += "s"
+    if not tA[1] == 1:
+        m += "s"
+    if not tA[0] == 1:
+        h += "s"
+
+    if tA[0] > 0:
+        return f"{tA[0]} {h}, {tA[1]} {m}, {tA[2]} {s}"
+    elif tA[1] > 0:
+        return f"{tA[1]} {m}, {tA[2]} {s}"
+    else:
+        return f"{tA[2]} {s}"
+
+
 def replaceVars(name, map: str, client: str):
     name = name.replace("%MAP%", map[:-5])
     name = name.replace("%CLIENT%", client)
@@ -28,9 +54,9 @@ def UArequired(func):
     return decor_funct
 
 
-def validateRequest(id, client, players, uptime, mapName, port, ip):
+def validateRequest(id, client, players, mapName, port):
     '''Make sure the creation request is valid'''
-    if not id or not client or not players or not uptime:
+    if not id or not client or not players:
         return False
     
     if len(id) != 50:
@@ -38,9 +64,6 @@ def validateRequest(id, client, players, uptime, mapName, port, ip):
     
     if not re.search("^\d+(\/\d+)*$", players):
         return False
-
-    try:    float(uptime)
-    except: return False
     
     try:    port = int(port)
     except: return False
@@ -57,7 +80,6 @@ def createServer():
     id      = request.args.get("id")
     client  = request.args.get("client")
     players = request.args.get("players")
-    uptime  = request.args.get("time")
     mapName = request.args.get("map")
     portNum = request.args.get("port")
     serName = request.args.get("name")
@@ -69,7 +91,7 @@ def createServer():
     if id in serverList:
         return "", 404
 
-    if not validateRequest(id, client, players, uptime, mapName, portNum, ipAddr):
+    if not validateRequest(id, client, players, mapName, portNum):
         return "I can't validate the request.", 400
 
     serName = replaceVars(serName, mapName, client)
@@ -87,7 +109,8 @@ def createServer():
         id: {
             "client":     client,
             "players":    players,
-            "uptime":     int(uptime),
+            "starttime":  monotonic(),
+            "uptime":     convertTime(1),
             "map":        mapName,
             "port":       portNum,
             "ip":         ipAddr,
@@ -112,7 +135,6 @@ def keepAlive(integer):
     ipAddr  = request.remote_addr
 
     players = request.args.get("players")
-    uptime  = request.args.get("time")
 
     try: server = serverList[id]
     except: return "I can't validate the request.", 400
@@ -133,7 +155,7 @@ def keepAlive(integer):
     server.update({
         "keepAlive": monotonic(),
         "players":   players,
-        "uptime":    round(float(uptime)) # Can't convert because float is too long apparently
+        "uptime":    convertTime(324244) #convertTime(monotonic() - server["starttime"])
     })
 
     return "", 404

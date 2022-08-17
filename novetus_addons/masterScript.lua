@@ -1,7 +1,7 @@
 --> Custom master server by enuf
-local masterServerAddr = "novetus.viw.se"
+local masterServerAddr = "localhost:5000"
 local ServerName = "Novetus | %MAP% | %CLIENT%"
---> Note: %MAP% and %CLIENT% are NOT placeholders. These are variables and will inherit your map name and client name automatically for you :)
+--> Note: %MAP% and %CLIENT% are variables and will automatically get replaced by the client and map name.
 
 
 local function rndID(length)
@@ -40,7 +40,8 @@ local function masterServerPinger()
 
     local callServer = Instance.new("Sound", game.Lighting)
         callServer.Name = "Create server"
-        callServer.SoundId = "http://"..masterServerAddr.."/server/create"..requestURI.."&time="..game.Workspace.DistributedGameTime.."&players="..getPlayerCount(maxPlayers)
+        callServer.SoundId = "http://"..masterServerAddr.."/server/create"..requestURI.."&players="..getPlayerCount(maxPlayers)
+
     --> Done creating new server on master
     callServer:remove()
     print("Done creating server on master server.")
@@ -51,7 +52,7 @@ local function masterServerPinger()
 
         local keepAlive = Instance.new("Sound", game.Lighting)
             keepAlive.Name = "Pinging master server"
-            keepAlive.SoundId = "http://"..masterServerAddr.."/server/keepAlive"..num..requestURI.."&time="..game.Workspace.DistributedGameTime.."&players="..getPlayerCount(maxPlayers)
+            keepAlive.SoundId = "http://"..masterServerAddr.."/server/keepAlive"..num..requestURI.."&players="..getPlayerCount(maxPlayers)
 
         keepAlive:remove()
     end
