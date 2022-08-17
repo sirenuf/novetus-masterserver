@@ -15,7 +15,7 @@ end
 
 local function getPlayerCount(max)
     local count = game.Players:GetChildren()
-    print("yeah")
+
     for _, v in ipairs(count) do 
         if v.Name == "[SERVER]" and not v.Character then
             return tostring(#count - 1).."/"..tostring(max - 1)
