@@ -155,7 +155,7 @@ def keepAlive(integer):
     server.update({
         "keepAlive": monotonic(),
         "players":   players,
-        "uptime":    convertTime(324244) #convertTime(monotonic() - server["starttime"])
+        "uptime":    convertTime(monotonic() - server["starttime"])
     })
 
     return "", 404
