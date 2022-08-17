@@ -40,9 +40,12 @@ def convertTime(seconds):
 
 
 def replaceVars(name, map: str, client: str):
-    name = name.upper()
-    name = name.replace("%MAP%", map[:-5])
-    name = name.replace("%CLIENT%", client)
+    vars = {"%CLIENT%": client, "%MAP%": map}
+
+    for k, v in vars.items():
+        compiled = re.compile(re.escape(k), re.IGNORECASE)
+        name = compiled.sub(v, name)
+
     return name
 
 def UArequired(func):
