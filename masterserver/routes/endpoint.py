@@ -5,7 +5,8 @@ from base64 import b64encode as b64
 from flask import (
     Blueprint,
     request,
-    render_template
+    render_template,
+    redirect
 )
 
 serverList = {}
@@ -40,7 +41,7 @@ def convertTime(seconds):
 
 
 def replaceVars(name, map: str, client: str):
-    vars = {"%CLIENT%": client, "%MAP%": map}
+    vars = {"%CLIENT%": client, "%MAP%": map[:-5]}
 
     for k, v in vars.items():
         compiled = re.compile(re.escape(k), re.IGNORECASE)
@@ -177,3 +178,9 @@ def novetusServerBrowser():
 @bp.route("/")
 def serverLister():
     return render_template("serverlist.html", array=serverList)
+
+
+@bp.route("/asset")
+def assetRedir():
+    id = request.args.get("id")
+    return redirect("https://assetdelivery.roblox.com/v1/asset?id=" + str(id), 301)
