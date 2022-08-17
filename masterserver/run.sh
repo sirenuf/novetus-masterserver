@@ -1,1 +1,1 @@
-screen -S gunicorn -w 1 server:app
+gunicorn -w 1 server:app
