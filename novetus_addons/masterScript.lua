@@ -1,5 +1,5 @@
 --> Custom master server by enuf
-local masterServerAddr = "localhost:5000"
+local masterServerAddr = "novetus.viw.se"
 local ServerName = "Novetus | %MAP% | %CLIENT%"
 --> Note: %MAP% and %CLIENT% are variables and will automatically get replaced by the client and map name.
 
@@ -15,9 +15,9 @@ end
 
 local function getPlayerCount(max)
     local count = game.Players:GetChildren()
-
+    print("yeah")
     for _, v in ipairs(count) do 
-        if v.Name == "[SERVER]" then
+        if v.Name == "[SERVER]" and not v.Character then
             return tostring(#count - 1).."/"..tostring(max - 1)
         end
     end
@@ -69,7 +69,7 @@ function this:PostInit()
     print("\nHello from addon\n")
 
     --> If studio type isn't a server, then stop don't execute.
-    if game.Lighting.ScriptLoaded.Value ~= "Server" then --if waitForChild(game.Lighting, "ScriptLoaded").Value ~= "Server" then return end
+    if game.Lighting.ScriptLoaded.Value ~= "Server" then
         print("This is not a server. Stopping master server script.") return end
 
     local MSC = coroutine.create(masterServerPinger)
