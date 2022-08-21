@@ -41,7 +41,8 @@ def convertTime(seconds):
 
 
 def replaceVars(name, map: str, client: str):
-    vars = {"%CLIENT%": client, "%MAP%": map[:-5]}
+    if map.endswith(".rbxl"): map = map[:-5]
+    vars = {"%CLIENT%": client, "%MAP%": map}
 
     for k, v in vars.items():
         compiled = re.compile(re.escape(k), re.IGNORECASE)
