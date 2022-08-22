@@ -1,12 +1,13 @@
 import re
 from functools import wraps
-from time import monotonic
+from time import time
 from base64 import b64encode as b64
 from flask import (
     Blueprint,
     request,
     render_template,
-    redirect
+    redirect,
+    jsonify
 )
 
 serverList = {}
@@ -115,16 +116,16 @@ def createServer():
         id: {
             "client":     client,
             "players":    players,
-            "starttime":  monotonic(),
+            "starttime":  time(),
             "uptime":     convertTime(1),
             "map":        mapName,
             "port":       portNum,
             "ip":         ipAddr,
-            "b64uri":     f"onclick=\"window.location.href='novetus://{novetusURI.decode()}';\"", # What the fuck
+            "b64uri":     novetusURI.decode(), # What the fuck
             "b64master":  encodedStr.decode(),
             "name":       serName,
             "novetusver": novetusVer,
-            "keepAlive":  monotonic()
+            "keepAlive":  time()
         }})
 
     # 404 for safety
@@ -155,13 +156,13 @@ def keepAlive(integer):
         return "I can't validate the request.", 400
     
     # Because roblox duplicates requests
-    if server["keepAlive"] == monotonic():
+    if server["keepAlive"] == time():
         return "", 404
     
     server.update({
-        "keepAlive": monotonic(),
+        "keepAlive": time(),
         "players":   players,
-        "uptime":    convertTime(monotonic() - server["starttime"])
+        "uptime":    convertTime(time() - server["starttime"])
     })
 
     return "", 404
@@ -185,3 +186,12 @@ def serverLister():
 def assetRedir():
     id = request.args.get("id")
     return redirect("https://assetdelivery.roblox.com/v1/asset?id=" + str(id), 301)
+
+
+@bp.route("/api")
+def apiRetur():
+    tempRay = []
+    for _, v in serverList.items():
+        tempRay.append(v)
+    
+    return jsonify(tempRay)

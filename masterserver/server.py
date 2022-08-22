@@ -1,5 +1,5 @@
 from threading import Thread
-from time import sleep, monotonic
+from time import sleep, time
 from routes import endpoint
 from routes.endpoint import serverList as sL
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -15,7 +15,7 @@ def routine():
     while True:
         sleep(6)
         for key, value in sL.copy().items():
-            if monotonic() - value["keepAlive"] >= 15:
+            if time() - value["keepAlive"] >= 15:
                 sL.pop(key, None)
 
 task = Thread(target=routine, daemon=True)

@@ -41,7 +41,7 @@
                 display: block;
                 margin-left: auto;
                 margin-right: auto;
-                width: 90%;
+                width: 75%;
             }
 
 			p.sInfo.ip {
@@ -60,6 +60,12 @@
             li > p {
                 color: #adadad;
             }
+
+            form {
+                padding: 0;
+                margin: 0;
+                display: inline;
+            }
         </style>
     </head>
 
@@ -76,7 +82,7 @@
                     <p class="sInfo uptime">Uptime: <span class="tInfo uptime">{{ v["uptime"] }}</span></p>
                     <p class="sInfo players">Players: <span class="tInfo players">{{ v["players"] }}</span></p>
                     <p class="sInfo novetusver">Novetus version: <span class="tInfo novetusver">{{ v["novetusver"] }}</span></p>
-                    <button {{ v['b64uri']|safe }}>Launch Novetus</button>
+                    <form action="novetus://{{ v['b64uri']|safe }}"><button type="submit">Launch Novetus</button></form>
                     <br>
                 {% endfor %}
             {% else %}
@@ -102,7 +108,13 @@
                 <b>Note: If you're using other custom addon scripts, do not replace AddonLoader.lua. Instead, open the file and manually add the string "masterScript" to the Addons table.</b>
             </ol>
             <h3>Why doesn't <a href="https://austiverse.com/Download/Clients.zip">Austiverse clients</a> hosts show up?</h3>
-            <p>This is because of a lack of Novetus' addon API support. It seems that it isn't planned to be added at any time soon unfortunately.</p>
+            <ol>
+                <p>This is because of a lack of Novetus' addon API support. It seems that it isn't planned to be added at any time soon unfortunately.</p>
+            </ol>
+            <h3>API?</h3>
+            <ol>
+                <a href="/api">Sure</a>
+            </ol>
         </div>
     </body>
 </html>
