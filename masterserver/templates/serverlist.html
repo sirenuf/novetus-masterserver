@@ -21,6 +21,7 @@
             #container {
                 border-radius: 4px;
                 margin-top: 2%;
+                margin-bottom: 2%;
                 background-color: #1a1a1a;
                 padding: 10px;
             }
@@ -82,7 +83,7 @@
                     <p class="sInfo uptime">Uptime: <span class="tInfo uptime">{{ v["uptime"] }}</span></p>
                     <p class="sInfo players">Players: <span class="tInfo players">{{ v["players"] }}</span></p>
                     <p class="sInfo novetusver">Novetus version: <span class="tInfo novetusver">{{ v["novetusver"] }}</span></p>
-                    <form action="novetus://{{ v['b64uri']|safe }}"><button type="submit">Launch Novetus</button></form>
+                    <form><button type="submit" formaction="novetus://{{ v['b64uri']|safe }}">Launch Novetus</button></form>
                     <br>
                 {% endfor %}
             {% else %}

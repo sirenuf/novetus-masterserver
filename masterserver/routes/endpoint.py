@@ -121,7 +121,7 @@ def createServer():
             "map":        mapName,
             "port":       portNum,
             "ip":         ipAddr,
-            "b64uri":     novetusURI.decode(), # What the fuck
+            "b64uri":     novetusURI.decode(),
             "b64master":  encodedStr.decode(),
             "name":       serName,
             "novetusver": novetusVer,
@@ -182,7 +182,7 @@ def serverLister():
     return render_template("serverlist.html", array=serverList)
 
 
-@bp.route("/asset")
+@bp.route("/asset/")
 def assetRedir():
     id = request.args.get("id")
     return redirect("https://assetdelivery.roblox.com/v1/asset?id=" + str(id), 301)
