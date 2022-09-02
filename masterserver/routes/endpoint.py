@@ -2,6 +2,7 @@ import re
 from functools import wraps
 from time import time
 from base64 import b64encode as b64
+from copy import deepcopy as dc
 from flask import (
     Blueprint,
     request,
@@ -61,8 +62,14 @@ def UArequired(func):
     return decor_funct
 
 
-def validateRequest(id, client, players, mapName, port):
+def validateRequest(id, client, players, mapName, port, ip, playit):
     '''Make sure the creation request is valid'''
+
+    # if playit is enabled, make sure it is a valid IP address.
+    if playit:
+        if not re.search("^\w+?\.playit\.gg$", ip):
+            return False
+
     if not id or not client or not players:
         return False
     
@@ -90,7 +97,14 @@ def createServer():
     mapName = request.args.get("map")
     portNum = request.args.get("port")
     serName = request.args.get("name")
-    ipAddr  = request.remote_addr
+    
+    # Check for playit
+    playit = False
+    if request.args.get("playitIP"):
+        playit = True
+        ipAddr = request.args.get("playitIP")
+    else:
+        ipAddr = request.remote_addr
 
     if serName == "":
         serName = mapName
@@ -98,7 +112,7 @@ def createServer():
     if id in serverList:
         return "", 404
 
-    if not validateRequest(id, client, players, mapName, portNum):
+    if not validateRequest(id, client, players, mapName, portNum, ipAddr, playit):
         return "I can't validate the request.", 400
 
     serName = replaceVars(serName, mapName, client)
@@ -125,7 +139,8 @@ def createServer():
             "b64master":  encodedStr.decode(),
             "name":       serName,
             "novetusver": novetusVer,
-            "keepAlive":  time()
+            "keepAlive":  time(),
+            "request_ip": request.remote_addr
         }})
 
     # 404 for safety
@@ -146,7 +161,7 @@ def keepAlive(integer):
     try: server = serverList[id]
     except: return "I can't validate the request.", 400
 
-    if ipAddr != server["ip"]:
+    if ipAddr != server["request_ip"]:
         return "I can't validate the request.", 400
 
     # Replace server name if has variables
@@ -191,7 +206,8 @@ def assetRedir():
 @bp.route("/api")
 def apiRetur():
     tempRay = []
-    for _, v in serverList.items():
+    for _, v in dc(serverList).items():
+        v.pop("request_ip", None)
         tempRay.append(v)
     
     return jsonify(tempRay)

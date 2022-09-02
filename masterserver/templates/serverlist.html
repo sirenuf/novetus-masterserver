@@ -61,6 +61,16 @@
             li > p {
                 color: #adadad;
             }
+
+            h3 {
+                margin-top: 30px;
+                margin-bottom: 10px;
+            }
+
+            ol {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
         </style>
     </head>
 
@@ -101,6 +111,13 @@
                 <li><p>Unfortunately, if you want to change server name in the server browser, you have to edit the "ServerName" variable at the top of the file.</p></li>
                 <br>
                 <b>Note: If you're using other custom addon scripts, do not replace AddonLoader.lua. Instead, open the file and manually add the string "masterScript" to the Addons table.</b>
+            </ol>
+            <h3>How to configure your server for <a href="//playit.gg">playit.gg</a></h3>
+            <ol>
+                <b>Normally the master server will just grab the remote IP address making the request and the game server port. Using <a href="//playit.gg">Playit.gg</a> requires some additional steps:</b>
+                <li><p>Open up masterScript.lua</p></li>
+                <li><p>Change the PLAYIT_ENABLED variable to true</p></li>
+                <li><p>Change the PLAYIT_ADDR to your respective Playit domain "e.g. mygame.playit.gg" and the PLAYIT_PORT to your respective port number you got assigned from Playit</p></li>
             </ol>
             <h3>Why doesn't <a href="https://austiverse.com/Download/Clients.zip">Austiverse clients</a> hosts show up?</h3>
             <ol>
