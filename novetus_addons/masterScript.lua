@@ -1,5 +1,10 @@
+--> !!IMPORTANT!! required for PLAYIT.gg. Change respective variables below:
+local PLAYIT_ENABLED = false
+local PLAYIT_ADDR = ""
+local PLAYIT_PORT = 0
+
 --> Custom master server by enuf
-local masterServerAddr = "novetus.viw.se"
+local masterServerAddr = "localhost:5000"
 local ServerName = "Novetus | %MAP% | %CLIENT%"
 --> Note: %MAP% and %CLIENT% are variables and will automatically get replaced by the client and map name.
 
@@ -34,13 +39,19 @@ local function masterServerPinger()
     local num        = 0
     local mapName    = tostring(game)
     local port       = game.NetworkServer.Port
-    local requestURI = "?id="..tostring(ID).."&client="..ClientVer.."&map="..mapName.."&port="..port.."&name="..ServerName
+    local requestURI = "?id="..tostring(ID).."&client="..ClientVer.."&map="..mapName.."&name="..ServerName
+    local ipAddr     = ""
+
+    if PLAYIT_ENABLED and PLAYIT_ADDR ~= "" and PLAYIT_PORT >= 1 and PLAYIT_PORT <= 65535 then
+        port   = PLAYIT_PORT
+        ipAddr = PLAYIT_ADDR
+    end
 
     print("Creating new server on master server: " .. masterServerAddr)
 
     local callServer = Instance.new("Sound", game.Lighting)
         callServer.Name = "Create server"
-        callServer.SoundId = "http://"..masterServerAddr.."/server/create"..requestURI.."&players="..getPlayerCount(maxPlayers)
+        callServer.SoundId = "http://"..masterServerAddr.."/server/create"..requestURI.."&players="..getPlayerCount(maxPlayers).."&playitIP="..ipAddr.."&port="..port
 
     --> Done creating new server on master
     callServer:remove()
@@ -52,7 +63,7 @@ local function masterServerPinger()
 
         local keepAlive = Instance.new("Sound", game.Lighting)
             keepAlive.Name = "Pinging master server"
-            keepAlive.SoundId = "http://"..masterServerAddr.."/server/keepAlive"..num..requestURI.."&players="..getPlayerCount(maxPlayers)
+            keepAlive.SoundId = "http://"..masterServerAddr.."/server/keepAlive"..num..requestURI.."&players="..getPlayerCount(maxPlayers).."&playitIP="..ipAddr.."&port="..port
 
         keepAlive:remove()
     end
