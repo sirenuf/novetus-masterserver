@@ -8,14 +8,15 @@
         <meta content="https://novetus.viw.se/static/favicon.ico" property="og:image" />
         <meta content="#00ffa2" data-react-helmet="true" name="theme-color" />
         <!-- End -->
-        <link rel="stylesheet" href="//viw.se/resources/css/main.css">
-        <link rel="icon" type="image/png" href="/static/favicon.ico">
+        <link rel="stylesheet" href="/static/css/main.css">
+        <link rel="icon" type="image/png" href="/static/img/favicon.ico">
         <title>Novetus | Server browser</title>
         <style>
             body {
                 max-width: 1024px;
                 margin: auto auto;
                 font-family: Arial, Helvetica, sans-serif;
+                background-image: url("/static/img/noise.png");
             }
 
             #container {
@@ -76,7 +77,7 @@
 
     <body>
         <div id="container">
-            <img id="fatvetus" class="center" src="/static/fatvetus.png">
+            <img id="fatvetus" class="center" src="/static/img/fatvetus.png">
             {% if array|length > 0 %}
                 {% for _, v in array.items() %}
                     <b class="sInfo name">{{ v["name"] }}</b>

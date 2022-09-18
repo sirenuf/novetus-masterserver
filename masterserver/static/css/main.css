@@ -1,0 +1,47 @@
+:root {
+    --textColour: #C7C7C7;
+    --other-textColour: #33cc9a;
+    --headerMain: #50ad8e;
+    --headerSnd: #2d785f;
+    --link: #7fffd4;
+    --linkHover: #175F47;
+    --linkTransition: color .25s ease;
+    --fontFamily: Consolas, Monospace, Arial; 
+    --background-colour: #1b1b1b;
+    --image-background: #404040;
+}
+
+@keyframes FadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+* {
+    font-family: var(--fontFamily);
+}
+
+body {
+    background-color: var(--background-colour);
+    background-attachment: fixed;
+    color: var(--textColour);
+    font-size: 15px;
+    animation: FadeIn .5s ease;
+}
+
+h1 {
+    color: var(--headerMain);
+}
+
+h2, h3 {
+    color: var(--headerSnd);
+}
+
+a {
+    color: var(--link);
+    transition: var(--linkTransition);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--linkHover);
+}

@@ -143,8 +143,7 @@ def createServer():
             "request_ip": request.remote_addr
         }})
 
-    # 404 for safety
-    return "", 404
+    return "", 200
 
 @bp.route("/server/keepAlive<integer>")
 @UArequired
@@ -171,8 +170,8 @@ def keepAlive(integer):
         return "I can't validate the request.", 400
     
     # Because roblox duplicates requests
-    if server["keepAlive"] == time():
-        return "", 404
+    #if server["keepAlive"] == time():
+    #    return "", 404
     
     server.update({
         "keepAlive": time(),
@@ -180,7 +179,7 @@ def keepAlive(integer):
         "uptime":    convertTime(time() - server["starttime"])
     })
 
-    return "", 404
+    return "", 200
 
 
 @bp.route("/serverlist.txt")
